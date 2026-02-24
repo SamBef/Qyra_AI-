@@ -1,0 +1,2188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qyra v2.1 — Master Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,wght@0,300;0,700;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #05050a;
+        --surface: #0b0b14;
+        --card: #12121c;
+        --card-2: #181825;
+        --border: #202030;
+        --border-hi: #353550;
+
+        --gold: #e6b022;
+        --gold-dim: #9c7815;
+        --purple: #7d3cec;
+        --purple-hi: #9d6bff;
+        --emerald: #10b981;
+        --crimson: #ef4444;
+        --sky: #0ea5e9;
+
+        --text: #f0f0f5;
+        --text-2: #9ca3af;
+        --text-3: #6b7280;
+
+        /* Bot Animation Colors */
+        --c-free-primary: #9ca3af;
+        --c-free-secondary: #4b5563;
+        --c-gold-primary: #e6b022;
+        --c-gold-secondary: #9c7815;
+        --c-biz-primary: #9d6bff;
+        --c-biz-secondary: #6b2fd9;
+
+        --mono: "IBM Plex Mono", monospace;
+        --sans: "Syne", sans-serif;
+        --serif: "Fraunces", serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 15px;
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+
+      /* ── NOISE OVERLAY ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 999;
+        opacity: 0.4;
+      }
+
+      /* ── BOT ANIMATIONS ── */
+      .qyra-bot-svg {
+        width: 140px;
+        height: 140px;
+        filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.5));
+        animation: float 4s ease-in-out infinite;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .bot-shell {
+        animation: colorCycleShell 12s infinite alternate;
+      }
+      .bot-detail {
+        animation: colorCycleDetail 12s infinite alternate;
+      }
+      .bot-glow {
+        animation: glowPulse 12s infinite alternate;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      @keyframes colorCycleShell {
+        0%,
+        30% {
+          fill: var(--c-free-primary);
+        } /* Free */
+        35%,
+        65% {
+          fill: var(--c-gold-primary);
+        } /* Personal */
+        70%,
+        100% {
+          fill: var(--c-biz-primary);
+        } /* Biz */
+      }
+      @keyframes colorCycleDetail {
+        0%,
+        30% {
+          fill: var(--c-free-secondary);
+        }
+        35%,
+        65% {
+          fill: var(--c-gold-secondary);
+        }
+        70%,
+        100% {
+          fill: var(--c-biz-secondary);
+        }
+      }
+      @keyframes glowPulse {
+        0%,
+        30% {
+          fill: #e5e7eb;
+          filter: drop-shadow(0 0 5px rgba(229, 231, 235, 0.5));
+        }
+        35%,
+        65% {
+          fill: #fef3c7;
+          filter: drop-shadow(0 0 8px rgba(230, 176, 34, 0.6));
+        }
+        70%,
+        100% {
+          fill: #ede9fe;
+          filter: drop-shadow(0 0 8px rgba(125, 60, 236, 0.6));
+        }
+      }
+
+      /* ── ICONS ── */
+      .icon-box {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        margin-bottom: 20px;
+      }
+      .icon-box svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .icon-gold {
+        background: rgba(230, 176, 34, 0.1);
+        color: var(--gold);
+        border: 1px solid rgba(230, 176, 34, 0.2);
+      }
+      .icon-purple {
+        background: rgba(125, 60, 236, 0.1);
+        color: var(--purple-hi);
+        border: 1px solid rgba(125, 60, 236, 0.2);
+      }
+      .icon-green {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--emerald);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+      .icon-sky {
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--sky);
+        border: 1px solid rgba(14, 165, 233, 0.2);
+      }
+      .icon-neutral {
+        background: rgba(156, 163, 175, 0.1);
+        color: #9ca3af;
+        border: 1px solid #9ca3af;
+      }
+
+      /* ── SIDEBAR NAV ── */
+      .sidenav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        padding: 32px 0;
+        overflow-y: auto;
+        z-index: 100;
+      }
+
+      .sidenav-logo {
+        padding: 0 32px 32px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+
+      .sidenav-logo .mark {
+        font-family: var(--serif);
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--gold);
+        letter-spacing: -0.5px;
+      }
+
+      .sidenav-logo .sub {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-3);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+
+      .nav-section-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-3);
+        padding: 16px 32px 8px;
+      }
+
+      .nav-link {
+        display: block;
+        padding: 10px 32px;
+        color: var(--text-2);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+        border-left: 2px solid transparent;
+      }
+
+      .nav-link:hover {
+        color: var(--gold);
+        background: rgba(230, 176, 34, 0.03);
+        border-left-color: var(--gold);
+      }
+
+      .nav-link.active {
+        color: var(--gold);
+        background: rgba(230, 176, 34, 0.08);
+        border-left-color: var(--gold);
+      }
+
+      /* ── MAIN ── */
+      .main {
+        margin-left: 260px;
+        padding: 0 80px 120px;
+        max-width: 1200px;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        padding: 100px 0 80px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "◈";
+        position: absolute;
+        right: -20px;
+        top: 0px;
+        font-size: 300px;
+        color: rgba(230, 176, 34, 0.03);
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(230, 176, 34, 0.1);
+        border: 1px solid rgba(230, 176, 34, 0.25);
+        border-radius: 4px;
+        padding: 6px 14px;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--gold);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-family: var(--serif);
+        font-size: clamp(52px, 5vw, 80px);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -1.5px;
+        margin-bottom: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--text) 30%,
+          var(--text-2) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero h1 span {
+        color: var(--gold);
+        -webkit-text-fill-color: var(--gold);
+      }
+
+      .hero-tagline {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 22px;
+        color: var(--text-2);
+        margin-bottom: 40px;
+        font-weight: 300;
+        max-width: 800px;
+      }
+
+      .hero-meta {
+        display: flex;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .hero-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .hero-meta-item .label {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-3);
+      }
+
+      .hero-meta-item .val {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      /* ── SECTION ── */
+      .section {
+        padding: 80px 0 60px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 56px;
+      }
+
+      .section-num {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--gold);
+        letter-spacing: 2px;
+        background: rgba(230, 176, 34, 0.08);
+        border: 1px solid rgba(230, 176, 34, 0.2);
+        padding: 6px 10px;
+        border-radius: 4px;
+      }
+
+      .section-title {
+        font-family: var(--serif);
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -1px;
+      }
+
+      /* ── CARDS ── */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        border-color: var(--border-hi);
+      }
+
+      .card-title {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+
+      .card p,
+      .card li {
+        color: var(--text-2);
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .card ul {
+        padding-left: 20px;
+        margin-top: 12px;
+      }
+      .card li {
+        margin-bottom: 8px;
+      }
+
+      /* ── GRID ── */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+      }
+
+      /* ── CODE BLOCK ── */
+      .code-block {
+        background: #08080e;
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--gold);
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+        overflow-x: auto;
+      }
+
+      .code-block pre {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: #d0d0e0;
+        line-height: 1.7;
+        white-space: pre;
+      }
+
+      .c-comment {
+        color: #505070;
+        font-style: italic;
+      }
+      .c-key {
+        color: var(--gold);
+      }
+      .c-str {
+        color: var(--emerald);
+      }
+      .c-type {
+        color: var(--purple-hi);
+      }
+      .c-num {
+        color: #e07030;
+      }
+
+      /* ── TABLE ── */
+      .tbl-wrap {
+        overflow-x: auto;
+        margin: 24px 0;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      thead {
+        background: var(--card-2);
+      }
+      th {
+        padding: 16px 20px;
+        text-align: left;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-2);
+        vertical-align: top;
+        line-height: 1.6;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.015);
+      }
+
+      /* ── PILL TAGS ── */
+      .pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .pill-gold {
+        background: rgba(230, 176, 34, 0.12);
+        color: var(--gold);
+        border: 1px solid rgba(230, 176, 34, 0.25);
+      }
+      .pill-purple {
+        background: rgba(125, 60, 236, 0.15);
+        color: var(--purple-hi);
+        border: 1px solid rgba(125, 60, 236, 0.3);
+      }
+      .pill-green {
+        background: rgba(16, 185, 129, 0.12);
+        color: var(--emerald);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+      }
+      .pill-sky {
+        background: rgba(14, 165, 233, 0.12);
+        color: var(--sky);
+        border: 1px solid rgba(14, 165, 233, 0.25);
+      }
+      .pill-red {
+        background: rgba(239, 68, 68, 0.12);
+        color: var(--crimson);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+      }
+      .pill-neutral {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text-2);
+        border: 1px solid var(--border);
+      }
+
+      /* ── ACCENT BAND ── */
+      .accent-band {
+        background: linear-gradient(
+          135deg,
+          rgba(230, 176, 34, 0.06) 0%,
+          rgba(125, 60, 236, 0.06) 100%
+        );
+        border: 1px solid rgba(230, 176, 34, 0.15);
+        border-radius: 12px;
+        padding: 32px;
+        margin: 32px 0;
+      }
+      .accent-band strong {
+        color: var(--gold);
+      }
+
+      /* ── SCHEMA BOX ── */
+      .schema-entity {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 24px;
+        overflow: hidden;
+      }
+      .schema-entity-header {
+        background: var(--card-2);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .schema-entity-name {
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--purple-hi);
+      }
+      .schema-field {
+        display: grid;
+        grid-template-columns: 180px 120px 1fr 80px;
+        gap: 16px;
+        padding: 12px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        align-items: center;
+        font-size: 13px;
+      }
+      .sf-name {
+        font-family: var(--mono);
+        color: #a0a0d0;
+      }
+      .sf-type {
+        font-family: var(--mono);
+        color: var(--emerald);
+        font-size: 12px;
+      }
+      .sf-flag {
+        font-family: var(--mono);
+        font-size: 10px;
+        text-align: right;
+        color: var(--gold-dim);
+      }
+
+      /* ── COLOR SWATCHES ── */
+      .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .swatch {
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .swatch-color {
+        height: 56px;
+      }
+      .swatch-info {
+        background: var(--card);
+        padding: 8px 10px;
+      }
+      .swatch-name {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .swatch-hex {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--text-3);
+      }
+
+      /* ── TIMELINE ── */
+      .timeline {
+        margin: 24px 0;
+      }
+      .timeline-week {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .timeline-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--gold);
+        background: rgba(230, 176, 34, 0.08);
+        border: 1px solid rgba(230, 176, 34, 0.2);
+        border-radius: 4px;
+        padding: 6px 10px;
+        text-align: center;
+        height: fit-content;
+        margin-top: 4px;
+      }
+      .timeline-tasks {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px 20px;
+      }
+      .timeline-task-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text-2);
+        margin-bottom: 6px;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        .sidenav {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+          padding: 0 24px 80px;
+        }
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .schema-field {
+          grid-template-columns: 140px 100px 1fr;
+        }
+        .sf-flag {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="sidenav">
+      <div class="sidenav-logo">
+        <div class="mark">Qyra</div>
+        <div class="sub">Project Docs v2.1</div>
+      </div>
+      <div class="nav-section-label">Core</div>
+      <a class="nav-link" href="#prd">01 — PRD</a>
+      <a class="nav-link" href="#ananse">02 — Ananse Protocol</a>
+      <a class="nav-link" href="#hybrid">03 — Architecture</a>
+      <a class="nav-link" href="#techstack">04 — Tech Stack</a>
+      <div class="nav-section-label">Development</div>
+      <a class="nav-link" href="#frontend">05 — Frontend</a>
+      <a class="nav-link" href="#schema">06 — Schema</a>
+      <div class="nav-section-label">Strategy</div>
+      <a class="nav-link" href="#plan">07 — Plan</a>
+      <a class="nav-link" href="#premium">08 — Pricing</a>
+      <a class="nav-link" href="#techspecs">10 — Tech Specs</a>
+      <a class="nav-link" href="#risks">11 — Risks</a>
+    </nav>
+
+    <div class="main">
+      <div class="hero">
+        <div class="hero-badge">◈ Pan-African AI Agent · v2.1</div>
+        <h1><span>Qyra</span></h1>
+        <div class="hero-tagline">
+          Intelligence. Redefined. — Zero Config. Africa-First. Unstoppable.
+        </div>
+        <p
+          style="
+            color: var(--text-2);
+            max-width: 680px;
+            font-size: 16px;
+            margin-bottom: 32px;
+          "
+        >
+          Qyra v2.1 is the best of both worlds: The
+          <strong>instant utility</strong> of cloud agents (like ClawdBot)
+          combined with the <strong>offline sovereignty</strong> of Ananse's
+          Web. Start in Cloud Mode, control your desktop, and graduate to a
+          local node only when you're ready.
+        </p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span class="label">Version</span>
+            <span class="val">v2.1 (Premium Ready)</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">Security</span>
+            <span class="val">Ananse Social Recovery</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">Architecture</span>
+            <span class="val">Hybrid: Cloud / PC / Local</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">Monetization</span>
+            <span class="val">Freemium + Biz Tier</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="section" id="prd">
+        <div class="section-header">
+          <span class="section-num">DOC 01</span>
+          <h2 class="section-title">Requirements: Zero Stress</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Problem Statement (Refined)</div>
+          <p>
+            Self-hosted agents usually require buying hardware (Raspberry Pi)
+            and technical configuration, which is a massive barrier to entry.
+            Conversely, cloud agents (ClawdBot) are easy but lack African
+            context and offline safety. Qyra v2.1 solves this by offering an
+            "Instant Cloud Start" that requires zero setup, with a clear path to
+            self-hosting later.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Core Functional Requirements</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Feature</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FR-01</td>
+                  <td>Zero-Config Cloud Start</td>
+                  <td>
+                    App defaults to a "Managed Relay" for instant chat/skills.
+                    No Pi required to start.
+                  </td>
+                  <td><span class="pill pill-red">P0</span></td>
+                </tr>
+                <tr>
+                  <td>FR-02</td>
+                  <td>Desktop Satellite</td>
+                  <td>
+                    Mobile app controls PC (Windows/Mac) via "Satellite" binary.
+                    (ClawdBot parity).
+                  </td>
+                  <td><span class="pill pill-red">P0</span></td>
+                </tr>
+                <tr>
+                  <td>FR-03</td>
+                  <td>Ananse’s Web</td>
+                  <td>Distributed Social Guardianship for account recovery.</td>
+                  <td><span class="pill pill-red">P0</span></td>
+                </tr>
+                <tr>
+                  <td>FR-04</td>
+                  <td>Offline Voice</td>
+                  <td>
+                    Whisper.cpp (Tiny) on phone for vernacular command capture
+                    (Twi, Yoruba).
+                  </td>
+                  <td><span class="pill pill-gold">P1</span></td>
+                </tr>
+                <tr>
+                  <td>FR-05</td>
+                  <td>Skill Packs</td>
+                  <td>
+                    One-click config: "Trader Pack", "Dev Pack", "Student Pack".
+                  </td>
+                  <td><span class="pill pill-green">P2</span></td>
+                </tr>
+                <tr>
+                  <td>FR-06</td>
+                  <td>Qyra Biz</td>
+                  <td>
+                    <strong>[NEW] Premium:</strong> WhatsApp Auto-Reply &
+                    Receipt OCR for merchants.
+                  </td>
+                  <td><span class="pill pill-purple">Biz</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="ananse">
+        <div class="section-header">
+          <span class="section-num">DOC 02</span>
+          <h2 class="section-title">Ananse’s Web Protocol</h2>
+        </div>
+
+        <div class="accent-band">
+          <strong>The Concept:</strong> Instead of trusting a Google server with
+          your keys, you trust your "Village." Ananse’s Web uses
+          <strong>Shamir's Secret Sharing (SSS)</strong> to split your master
+          key into shards distributed among trusted family members (Guardians).
+        </div>
+
+        <div style="display: flex; justify-content: center; padding: 32px">
+          <div
+            class="icon-box icon-purple"
+            style="width: 80px; height: 80px; border-radius: 50%"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+              <path d="M2 12h20"></path>
+              <path d="M12 12l4.5 4.5"></path>
+              <path d="M12 12l-4.5 -4.5"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+                fill="currentColor"
+                fill-opacity="0.2"
+              ></circle>
+            </svg>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">The Mechanism</div>
+            <ul>
+              <li>
+                <strong>Shard Generation:</strong> Master Key is split into 5
+                shards (2 kept on device, 3 sent to Guardians).
+              </li>
+              <li>
+                <strong>Reconstruction:</strong> Requires 3 shards to rebuild
+                the key.
+              </li>
+              <li>
+                <strong>Zero-Knowledge:</strong> Guardians never see the key,
+                only their encrypted shard.
+              </li>
+              <li>
+                <strong>Social Recovery:</strong> Lose your phone? Guardians
+                approve a "Help" request to restore your vault.
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Transaction Signing</div>
+            <div class="code-block" style="margin: 0">
+              <pre>
+<span class="c-comment">// Rust Psuedocode for Threshold Sign</span>
+<span class="c-key">fn</span> <span class="c-type">approve_transaction</span>(tx: Transaction) {
+  <span class="c-key">if</span> tx.amount > <span class="c-num">500.0</span> {
+    <span class="c-comment">// Require Witness</span>
+    <span class="c-key">let</span> witness_sig = <span class="c-type">Ananse</span>::request_witness(guardian_id);
+    <span class="c-key">let</span> local_sig = <span class="c-type">Vault</span>::sign(tx);
+    <span class="c-type">Chain</span>::submit(tx, [local_sig, witness_sig]);
+  }
+}
+          </pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="hybrid">
+        <div class="section-header">
+          <span class="section-num">DOC 03</span>
+          <h2 class="section-title">The "Flexible Brain" Architecture</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            Philosophy: Instant Start, Gradual Sovereignty
+          </div>
+          <p>
+            To eliminate configuration stress, Qyra v2.1 introduces a
+            <strong>multi-tier intelligence model</strong>. Users start in
+            "Cloud Mode" (Zero Config) and can migrate to "Local Mode" (High
+            Privacy) seamlessly.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="icon-box icon-green">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M17.5 19c0-1.7-1.3-3-3-3h-11c-1.7 0-3 1.3-3 3v1h17v-1z"
+                ></path>
+                <path d="M12 11l-3 3h6l-3 3"></path>
+                <path d="M17.5 19a9 9 0 0 0-9-9 9 9 0 0 0-9 9"></path>
+                <path d="M12 2v6"></path>
+                <path d="M12 2l-3 3h6l-3-3"></path>
+              </svg>
+            </div>
+            <div class="card-title">Tier 1: Cloud (Default)</div>
+            <p><strong>For:</strong> First-time users, simple tasks.</p>
+            <p><strong>Setup:</strong> Download App & Go.</p>
+            <p>
+              <strong>Brain:</strong> Managed Qyra Relay (Llama 3 hosted in
+              Africa). Low data usage, instant response.
+            </p>
+            <span class="pill pill-green">Zero Config</span>
+          </div>
+          <div class="card">
+            <div class="icon-box icon-gold">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+                <path d="M12 7v4"></path>
+                <path d="M10 9l2-2 2 2"></path>
+              </svg>
+            </div>
+            <div class="card-title">Tier 2: Desktop Link</div>
+            <p>
+              <strong>For:</strong> Developers, "ClawdBot" style automation.
+            </p>
+            <p><strong>Setup:</strong> Scan QR code on PC.</p>
+            <p>
+              <strong>Brain:</strong> Phone + PC Satellite. Allows phone to
+              control desktop apps/files.
+            </p>
+            <span class="pill pill-gold">Moderate</span>
+          </div>
+          <div class="card">
+            <div class="icon-box icon-purple">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+              </svg>
+            </div>
+            <div class="card-title">Tier 3: Home Node</div>
+            <p><strong>For:</strong> Privacy absolutists, Offline mode.</p>
+            <p><strong>Setup:</strong> Raspberry Pi / Home Server.</p>
+            <p>
+              <strong>Brain:</strong> 100% Local Phi-3. No internet required.
+              Full sovereignty.
+            </p>
+            <span class="pill pill-purple">Advanced</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="techstack">
+        <div class="section-header">
+          <span class="section-num">DOC 04</span>
+          <h2 class="section-title">Technical Stack (v2.1)</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Architecture Overview</div>
+          <p>
+            Qyra is built primarily in <strong>Rust</strong> to ensure memory
+            safety on low-resource devices. The stack is divided into the
+            <strong>Client Layer</strong> (UI/Interaction) and the
+            <strong>Compute Layer</strong> (Brain/Relay).
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="border-top: 2px solid var(--emerald)">
+            <div class="card-title" style="color: var(--emerald)">
+              1. Frontend (Client)
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tech/Crate</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Leptos</strong></td>
+                    <td>
+                      <span class="pill pill-green">Web/WASM</span> Reactive UI
+                      framework for the App interface.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tauri v2</strong></td>
+                    <td>
+                      <span class="pill pill-green">Desktop</span> wrapper for
+                      the "Desktop Satellite" binary (Windows/Mac).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>UniFFI</strong></td>
+                    <td>
+                      <span class="pill pill-green">Mobile</span> Rust bindings
+                      for Kotlin (Android) & Swift (iOS).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>DaisyUI</strong></td>
+                    <td>
+                      <span class="pill pill-green">Styles</span> Tailwind
+                      components for the Kente UI theme.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="border-top: 2px solid var(--purple-hi)">
+            <div class="card-title" style="color: var(--purple-hi)">
+              2. Backend (Home Node / Relay)
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tech/Crate</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Axum</strong></td>
+                    <td>
+                      <span class="pill pill-purple">Server</span>
+                      High-performance HTTP server for the Cloud Relay.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>SurrealDB</strong></td>
+                    <td>
+                      <span class="pill pill-purple">Database</span> Stores User
+                      Profile, Transaction Logs, and Graph relations.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tokio</strong></td>
+                    <td>
+                      <span class="pill pill-purple">Runtime</span> Async
+                      runtime for handling concurrent tasks.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Docker</strong></td>
+                    <td>
+                      <span class="pill pill-purple">Ops</span> Containerization
+                      for easy Home Node deployment (Pi).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="border-top: 2px solid var(--gold)">
+            <div class="card-title" style="color: var(--gold)">
+              3. AI Intelligence
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tech/Crate</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Candle-Core</strong></td>
+                    <td>
+                      <span class="pill pill-gold">Inference</span> Runs
+                      quantized LLMs (Phi-3) directly in Rust.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Whisper-RS</strong></td>
+                    <td>
+                      <span class="pill pill-gold">Voice</span> C++ bindings for
+                      offline speech-to-text (Twi/Yoruba).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>LanceDB</strong></td>
+                    <td>
+                      <span class="pill pill-gold">Memory</span> Vector store
+                      for semantic search and long-term recall.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="border-top: 2px solid var(--crimson)">
+            <div class="card-title" style="color: var(--crimson)">
+              4. Ananse Security & Net
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tech/Crate</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>SSSS</strong></td>
+                    <td>
+                      <span class="pill pill-red">Crypto</span> Shamir's Secret
+                      Sharing for key fragmentation.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Threshold_Crypto</strong></td>
+                    <td>
+                      <span class="pill pill-red">Signatures</span> BLS
+                      threshold signatures for multi-guardian approval.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>LibP2P</strong></td>
+                    <td>
+                      <span class="pill pill-sky">Network</span> Peer-to-peer
+                      tunnels (NAT Traversal) for Desktop Link.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>AES-GCM</strong></td>
+                    <td>
+                      <span class="pill pill-red">Vault</span> Local encryption
+                      for the shard stored on-device.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="frontend">
+        <div class="section-header">
+          <span class="section-num">DOC 05</span>
+          <h2 class="section-title">Frontend Design Guidelines</h2>
+        </div>
+
+        <div class="accent-band">
+          <strong>Design Philosophy:</strong> Qyra's visual identity draws from
+          the <strong>Kente cloth tradition</strong> — structured geometric
+          rhythm, rich dark grounds, and deliberate gold accents. The interface
+          must handle the complexity of the v2.1 "Tiered" system (switching
+          between Cloud, Desktop, and Local modes) without overwhelming the
+          user.
+        </div>
+
+        <div class="card">
+          <div class="card-title">Brand Asset: The Animated Bot</div>
+          <div class="grid-2">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 12px;
+                padding: 20px;
+              "
+            >
+              <svg
+                class="qyra-bot-svg"
+                viewBox="0 0 200 240"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id="shine" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="white" stop-opacity="0.2" />
+                    <stop offset="100%" stop-color="white" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <g transform="translate(0, 10)">
+                  <path
+                    class="bot-detail"
+                    d="M75 180 L75 210 A 10 10 0 0 0 85 220 L90 220 A 5 5 0 0 0 95 215 L95 180 Z"
+                  />
+                  <path
+                    class="bot-detail"
+                    d="M125 180 L125 210 A 10 10 0 0 1 115 220 L110 220 A 5 5 0 0 1 105 215 L105 180 Z"
+                  />
+                </g>
+                <g transform="translate(0, 10)">
+                  <path
+                    class="bot-detail"
+                    d="M50 110 L40 130 A 10 10 0 0 0 50 150 L55 150"
+                    fill="none"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    style="stroke: inherit"
+                  />
+                  <path
+                    class="bot-detail"
+                    d="M150 110 L160 130 A 10 10 0 0 1 150 150 L145 150"
+                    fill="none"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                    stroke="currentColor"
+                    style="stroke: inherit"
+                  />
+                </g>
+                <rect
+                  class="bot-shell"
+                  x="60"
+                  y="100"
+                  width="80"
+                  height="90"
+                  rx="25"
+                  ry="25"
+                />
+                <rect
+                  fill="url(#shine)"
+                  x="60"
+                  y="100"
+                  width="80"
+                  height="90"
+                  rx="25"
+                  ry="25"
+                />
+                <g transform="translate(0, -5)">
+                  <rect
+                    class="bot-detail"
+                    x="85"
+                    y="90"
+                    width="30"
+                    height="20"
+                  />
+                  <rect
+                    class="bot-shell"
+                    x="55"
+                    y="30"
+                    width="90"
+                    height="70"
+                    rx="20"
+                    ry="20"
+                  />
+                  <rect
+                    class="bot-glow"
+                    x="70"
+                    y="55"
+                    width="60"
+                    height="20"
+                    rx="6"
+                    ry="6"
+                  />
+                  <path
+                    fill="url(#shine)"
+                    d="M55 50 Q 55 30 75 30 L 125 30 Q 145 30 145 50 L 145 60 L 55 60 Z"
+                    opacity="0.6"
+                  />
+                  <rect
+                    class="bot-detail"
+                    x="48"
+                    y="50"
+                    width="10"
+                    height="30"
+                    rx="3"
+                  />
+                  <rect
+                    class="bot-detail"
+                    x="142"
+                    y="50"
+                    width="10"
+                    height="30"
+                    rx="3"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div>
+              <h4>Bot State Usage</h4>
+              <ul
+                style="margin-top: 10px; font-size: 13px; color: var(--text-2)"
+              >
+                <li>
+                  <strong>Animation:</strong> The "floating" effect indicates
+                  the bot is active and listening. Pause animation when idle.
+                </li>
+                <li>
+                  <strong>Color Cycles:</strong>
+                  <ul>
+                    <li>
+                      <span style="color: #9ca3af">Silver:</span> Free Tier /
+                      Offline Mode
+                    </li>
+                    <li>
+                      <span style="color: #e6b022">Gold:</span> Personal Pro /
+                      Active Task
+                    </li>
+                    <li>
+                      <span style="color: #9d6bff">Purple:</span> Biz Mode /
+                      Transaction
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Implementation:</strong> Use CSS classes
+                  <code>.mode-gold</code> or <code>.mode-biz</code> to lock the
+                  color state manually.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Kente Color System</div>
+          <div class="swatch-grid">
+            <div class="swatch">
+              <div class="swatch-color" style="background: #07070d"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Void</div>
+                <div class="swatch-hex">#07070D</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #141420"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Card</div>
+                <div class="swatch-hex">#141420</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #d4a017"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Gold</div>
+                <div class="swatch-hex">#D4A017</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #6b2fd9"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Kente Purple</div>
+                <div class="swatch-hex">#6B2FD9</div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background: #0fa86a"></div>
+              <div class="swatch-info">
+                <div class="swatch-name">Savanna</div>
+                <div class="swatch-hex">#0FA86A</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="schema">
+        <div class="section-header">
+          <span class="section-num">DOC 06</span>
+          <h2 class="section-title">Database Schema (v2.1)</h2>
+        </div>
+
+        <div class="accent-band">
+          <strong>Structure:</strong> Adapted for <strong>SurrealDB</strong>.
+          This schema supports the new v2.1 features: `linked_device` (Desktop
+          Satellite) and `ananse_shard` (Social Recovery).
+        </div>
+
+        <div class="schema-entity">
+          <div class="schema-entity-header">
+            <span class="schema-entity-name">TABLE: user</span>
+            <span class="schema-entity-desc">Core identity</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">id</span
+            ><span class="sf-type">record(user)</span
+            ><span class="sf-desc">Primary Key</span
+            ><span class="sf-flag">PK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">tier</span><span class="sf-type">string</span
+            ><span class="sf-desc">Enum: free | pro | biz</span
+            ><span class="sf-flag">NEW</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">username</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc">Unique handle</span
+            ><span class="sf-flag">UNIQUE</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">language</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc">en, tw, yo, ha, sw</span
+            ><span class="sf-flag">DEFAULT 'en'</span>
+          </div>
+        </div>
+
+        <div class="schema-entity">
+          <div class="schema-entity-header">
+            <span class="schema-entity-name">TABLE: linked_device</span>
+            <span class="schema-entity-desc"
+              >Desktop Satellites & Home Nodes</span
+            >
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">id</span
+            ><span class="sf-type">record(device)</span
+            ><span class="sf-flag">PK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">user_id</span
+            ><span class="sf-type">record(user)</span
+            ><span class="sf-flag">FK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">type</span><span class="sf-type">string</span
+            ><span class="sf-desc">Enum: desktop_satellite | home_node</span
+            ><span class="sf-flag">INDEX</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">public_key</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc">Device identity key (for libp2p)</span
+            ><span class="sf-flag">UNIQUE</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">last_ip</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc">Last known local IP for mDNS discovery</span
+            ><span class="sf-flag"></span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">status</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc">Enum: online | offline | syncing</span
+            ><span class="sf-flag"></span>
+          </div>
+        </div>
+
+        <div class="schema-entity">
+          <div class="schema-entity-header">
+            <span class="schema-entity-name">TABLE: ananse_shard</span>
+            <span class="schema-entity-desc">Social Recovery Fragments</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">id</span
+            ><span class="sf-type">record(shard)</span
+            ><span class="sf-flag">PK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">owner_id</span
+            ><span class="sf-type">record(user)</span
+            ><span class="sf-desc">Who this shard belongs to</span
+            ><span class="sf-flag">FK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">guardian_id</span
+            ><span class="sf-type">record(user)</span
+            ><span class="sf-desc">Who holds this shard</span
+            ><span class="sf-flag">FK</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">shard_index</span
+            ><span class="sf-type">int</span
+            ><span class="sf-desc">Shamir index (1-5)</span
+            ><span class="sf-flag"></span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">encrypted_blob</span
+            ><span class="sf-type">bytes</span
+            ><span class="sf-desc"
+              >The actual key fragment (encrypted for guardian)</span
+            ><span class="sf-flag">SECURE</span>
+          </div>
+          <div class="schema-field">
+            <span class="sf-name">status</span
+            ><span class="sf-type">string</span
+            ><span class="sf-desc"
+              >Enum: active | pending_recovery | recovered</span
+            ><span class="sf-flag"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="plan">
+        <div class="section-header">
+          <span class="section-num">DOC 07</span>
+          <h2 class="section-title">Implementation Plan v2.1</h2>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-week">
+            <div class="timeline-label">Phase 1<br />The "Easy" Core</div>
+            <div class="timeline-tasks">
+              <h4>Cloud-First Onboarding</h4>
+              <div class="timeline-task-item">
+                <strong>Relay Server:</strong> Set up a centralized (hosted)
+                Axum server running Llama 3 for "Tier 1" users.
+              </div>
+              <div class="timeline-task-item">
+                <strong>Skill Packs:</strong> Build one-click JSON
+                configurations for "Trader", "Student", and "Dev" personas.
+              </div>
+              <div class="timeline-task-item">
+                <strong>Ananse Lite:</strong> Allow "Cloud Backups" (encrypted)
+                for users who haven't set up Guardians yet.
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-week">
+            <div class="timeline-label">Phase 2<br />Desktop Power</div>
+            <div class="timeline-tasks">
+              <h4>The "ClawdBot" Bridge</h4>
+              <div class="timeline-task-item">
+                <strong>Satellite App:</strong> Build a 10MB Rust binary for
+                Windows/Mac using Tauri. Listens for commands from the Phone.
+              </div>
+              <div class="timeline-task-item">
+                <strong>QR Pairing:</strong> Implement a local LAN discovery
+                protocol (mDNS) to pair Phone to PC instantly.
+              </div>
+              <div class="timeline-task-item">
+                <strong>Desktop Skills:</strong> "Open URL", "Type Text", "Run
+                Terminal Command" (restricted mode).
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-week">
+            <div class="timeline-label">Phase 3<br />Sovereignty</div>
+            <div class="timeline-tasks">
+              <h4>The Graduation Path</h4>
+              <div class="timeline-task-item">
+                <strong>Migration Tool:</strong> "One-tap" transfer of vector
+                memory from Cloud Relay to Local Home Node.
+              </div>
+              <div class="timeline-task-item">
+                <strong>Offline Fallback:</strong> Seamless switching between
+                Cloud/Local based on internet availability.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="premium">
+        <div class="section-header">
+          <span class="section-num">DOC 08</span>
+          <h2 class="section-title">Sustainability & Premium Tiers</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Philosophy: Sovereignty is Free</div>
+          <p>
+            Qyra's core promise—local ownership, offline voice, and Ananse
+            security—is <strong>Forever Free</strong>. We monetize "Convenience"
+            (Cloud compute) and "Business Velocity" (Merchant tools) to pay for
+            the infrastructure.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card" style="border-top: 4px solid #9ca3af">
+            <div class="icon-box icon-neutral">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M17.5 19c0-1.7-1.3-3-3-3h-11c-1.7 0-3 1.3-3 3v1h17v-1z"
+                ></path>
+                <path d="M17.5 19a9 9 0 0 0-9-9 9 9 0 0 0-9 9"></path>
+                <path d="M12 2v6"></path>
+              </svg>
+            </div>
+            <div class="card-title" style="color: #9ca3af">
+              Qyra Core (Free)
+            </div>
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 16px;
+              "
+            >
+              $0
+              <span
+                style="font-size: 14px; font-weight: 400; color: var(--text-3)"
+                >/ mo</span
+              >
+            </div>
+            <ul>
+              <li>
+                <strong style="color: var(--text)">Unlimited</strong> Local Node
+                usage
+              </li>
+              <li>
+                <strong style="color: var(--text)">50</strong> Cloud Relay
+                msgs/day
+              </li>
+              <li>Basic Ananse Recovery (Friends)</li>
+              <li>Offline Voice (Whisper Tiny)</li>
+              <li>Desktop Satellite (Basic Control)</li>
+            </ul>
+            <span
+              class="pill pill-neutral"
+              style="margin-top: 16px; display: block; text-align: center"
+              >Community</span
+            >
+          </div>
+
+          <div
+            class="card"
+            style="
+              border-top: 4px solid var(--gold);
+              background: linear-gradient(
+                180deg,
+                rgba(212, 160, 23, 0.05) 0%,
+                var(--card) 100%
+              );
+            "
+          >
+            <div class="icon-box icon-gold">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+                ></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+              </svg>
+            </div>
+            <div class="card-title">Qyra+ (Personal)</div>
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 16px;
+                color: var(--gold);
+              "
+            >
+              $4
+              <span
+                style="font-size: 14px; font-weight: 400; color: var(--text-3)"
+                >/ mo</span
+              >
+            </div>
+            <ul>
+              <li>
+                <strong style="color: var(--gold)">Unlimited</strong> Cloud
+                Relay
+              </li>
+              <li>Access to <strong>Llama 3 70B</strong> (Smarter Brain)</li>
+              <li>
+                <strong>Institutional Guardian:</strong> Qyra acts as a trusted
+                backup shard for Ananse.
+              </li>
+              <li>High-Fidelity Cloud TTS (Natural Voice)</li>
+            </ul>
+            <span
+              class="pill pill-gold"
+              style="margin-top: 16px; display: block; text-align: center"
+              >Most Popular</span
+            >
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--purple-hi)">
+            <div class="icon-box icon-purple">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+                <path d="M2 20h20"></path>
+              </svg>
+            </div>
+            <div class="card-title" style="color: var(--purple-hi)">
+              Qyra Biz
+            </div>
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 16px;
+                color: var(--purple-hi);
+              "
+            >
+              $12
+              <span
+                style="font-size: 14px; font-weight: 400; color: var(--text-3)"
+                >/ mo</span
+              >
+            </div>
+            <ul>
+              <li>Everything in Qyra+</li>
+              <li>
+                <strong>WhatsApp Auto-Agent:</strong> Responds to customers
+                24/7.
+              </li>
+              <li>
+                <strong>Receipt OCR:</strong> Snap photo to update ledger.
+              </li>
+              <li>
+                <strong>Inventory Watch:</strong> Camera-based stock counting.
+              </li>
+              <li>Priority Support</li>
+            </ul>
+            <span
+              class="pill pill-purple"
+              style="margin-top: 16px; display: block; text-align: center"
+              >For Merchants</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="techspecs">
+        <div class="section-header">
+          <span class="section-num">DOC 10</span>
+          <h2 class="section-title">Technical Appendix & Compatibility</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Inter-Device Protocol (JSON Schema)</div>
+          <p>
+            Communication between Phone, Desktop Satellite, and Home Node uses
+            <code>libp2p</code> with the following JSON payload structure.
+          </p>
+          <div class="code-block" style="margin-top: 10px">
+            <pre>
+<span class="c-comment">// Base Message Envelope</span>
+{
+  <span class="c-key">"id"</span>: <span class="c-str">"uuid-v4-string"</span>,
+  <span class="c-key">"timestamp"</span>: <span class="c-num">1715000000</span>,
+  <span class="c-key">"sender_id"</span>: <span class="c-str">"device_public_key"</span>,
+  <span class="c-key">"target_id"</span>: <span class="c-str">"device_public_key"</span>,
+  <span class="c-key">"intent"</span>: <span class="c-str">"EXECUTE_SKILL"</span>, <span class="c-comment">// or "SYNC_STATE", "ANANSE_REQUEST"</span>
+  <span class="c-key">"payload"</span>: {
+    <span class="c-key">"skill_slug"</span>: <span class="c-str">"desktop-browser-open"</span>,
+    <span class="c-key">"params"</span>: {
+      <span class="c-key">"url"</span>: <span class="c-str">"https://github.com"</span>
+    }
+  },
+  <span class="c-key">"signature"</span>: <span class="c-str">"ed25519_signature_blob"</span>
+}</pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Device Compatibility Matrix</div>
+          <p>
+            Qyra v2.1 runs across three layers. Ensure your devices meet these
+            minimum requirements.
+          </p>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Supported Platforms</th>
+                  <th>Minimum Requirements</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Controller (Mobile App)</strong></td>
+                  <td>Android 10+, iOS 14+</td>
+                  <td>4GB RAM, 150MB Storage. (Required for everyone)</td>
+                </tr>
+                <tr>
+                  <td><strong>Satellite (Desktop Link)</strong></td>
+                  <td>Windows 10/11, macOS 10.15+, Ubuntu 20.04+</td>
+                  <td>x64 or ARM64 Architecture. (Required for Tier 2)</td>
+                </tr>
+                <tr>
+                  <td><strong>Home Node (Brain)</strong></td>
+                  <td>Linux (Debian-based), Docker</td>
+                  <td>
+                    4GB RAM minimum, 8GB Recommended. (Required for Tier 3)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            Tier 3 Hardware: The Home Node Alternatives
+          </div>
+          <p>
+            While the Raspberry Pi 4 is the "standard," users have different
+            needs. Choose your hardware based on your goal:
+          </p>
+
+          <div class="grid-3">
+            <div
+              class="card"
+              style="border: 1px solid var(--border-hi); margin-bottom: 0"
+            >
+              <h4 style="color: var(--text)">A. The "Easy" Choice</h4>
+              <span class="pill pill-green" style="margin-bottom: 12px"
+                >Intel N100 Mini PC</span
+              >
+              <ul style="font-size: 13px; color: var(--text-2)">
+                <li><strong>Device:</strong> Beelink S12 / GMKtec N100</li>
+                <li>
+                  <strong>Pros:</strong> x86 Architecture (Zero compatibility
+                  issues), includes case & SSD.
+                </li>
+                <li>
+                  <strong>Cons:</strong> Slightly higher power usage than ARM.
+                </li>
+                <li><strong>AI Power:</strong> Good CPU inference for Chat.</li>
+              </ul>
+            </div>
+
+            <div
+              class="card"
+              style="border: 1px solid var(--border-hi); margin-bottom: 0"
+            >
+              <h4 style="color: var(--text)">B. The "Power" Choice</h4>
+              <span class="pill pill-gold" style="margin-bottom: 12px"
+                >Radxa Rock 5B</span
+              >
+              <ul style="font-size: 13px; color: var(--text-2)">
+                <li><strong>Device:</strong> Rock 5B (16GB/32GB)</li>
+                <li>
+                  <strong>Pros:</strong> Supports up to 32GB RAM (Huge models).
+                  Powerful NPU.
+                </li>
+                <li>
+                  <strong>Cons:</strong> Requires NPU conversion tools (RKNN).
+                </li>
+                <li><strong>AI Power:</strong> Excellent for heavy LLMs.</li>
+              </ul>
+            </div>
+
+            <div
+              class="card"
+              style="border: 1px solid var(--border-hi); margin-bottom: 0"
+            >
+              <h4 style="color: var(--text)">C. The "Pro" Choice</h4>
+              <span class="pill pill-purple" style="margin-bottom: 12px"
+                >NVIDIA Jetson Orin</span
+              >
+              <ul style="font-size: 13px; color: var(--text-2)">
+                <li><strong>Device:</strong> Jetson Orin Nano (8GB)</li>
+                <li>
+                  <strong>Pros:</strong> CUDA Cores. Industry standard for AI.
+                </li>
+                <li>
+                  <strong>Cons:</strong> Expensive. Setup curve is steeper.
+                </li>
+                <li>
+                  <strong>AI Power:</strong> Maximum speed (GPU Accelerated).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 24px">
+          <div class="card">
+            <div class="card-title">Flow: Ananse Recovery</div>
+            <ol
+              style="padding-left: 20px; font-size: 13px; color: var(--text-2)"
+            >
+              <li>
+                <strong>Initiation:</strong> User installs fresh app, taps
+                "Recover Account".
+              </li>
+              <li>
+                <strong>Discovery:</strong> User enters their public username
+                (`@kofi`).
+              </li>
+              <li>
+                <strong>Challenge:</strong> App contacts the Guardian Registry
+                (Smart Contract/DHT) to find Guardians.
+              </li>
+              <li>
+                <strong>Request:</strong> App sends a push notification to
+                Guardians: "Kofi needs help."
+              </li>
+              <li>
+                <strong>Approval:</strong> Guardian taps "Approve" (Signs a
+                partial key shard).
+              </li>
+              <li>
+                <strong>Reconstruction:</strong> Once 3/5 Guardians approve, the
+                App reconstructs the Private Key in memory.
+              </li>
+            </ol>
+          </div>
+          <div class="card">
+            <div class="card-title">Flow: Desktop Command</div>
+            <ol
+              style="padding-left: 20px; font-size: 13px; color: var(--text-2)"
+            >
+              <li>
+                <strong>Input:</strong> User speaks "Open the budget file on my
+                laptop."
+              </li>
+              <li>
+                <strong>Intent:</strong> Mobile NPU detects intent
+                `desktop_file_open`.
+              </li>
+              <li>
+                <strong>Routing:</strong> App checks `linked_device` table for
+                online Satellite.
+              </li>
+              <li>
+                <strong>Transport:</strong> Message sent via encrypted P2P
+                tunnel (or Relay fallback).
+              </li>
+              <li>
+                <strong>Execution:</strong> Laptop Satellite receives JSON,
+                validates signature, executes OS command.
+              </li>
+              <li>
+                <strong>Feedback:</strong> Laptop sends success status back to
+                Phone.
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">QA & Testing Strategy</div>
+          <ul>
+            <li>
+              <strong>Voice Validation:</strong> Use "Common Voice" datasets +
+              Community Beta program in Accra/Lagos for accent verification.
+            </li>
+            <li>
+              <strong>Network Simulation:</strong> Test P2P protocol under
+              "2G/Edge" network conditions using `toxiproxy`.
+            </li>
+            <li>
+              <strong>Security Audit:</strong> External audit of the Rust `ssss`
+              crate implementation before v1.0 release.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="risks">
+        <div class="section-header">
+          <span class="section-num">DOC 11</span>
+          <h2 class="section-title">Risk & Feasibility Analysis</h2>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Cost Feasibility</div>
+            <p>
+              <strong>Risk:</strong> Hosting the "Tier 1" Cloud Relay costs
+              money (GPU servers). <br /><strong>Mitigation:</strong> Freemium
+              model. The "Cloud" tier has rate limits. "Local" tier (Home Node)
+              is unlimited because the user pays for their own hardware.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Cultural Feasibility</div>
+            <p>
+              <strong>Status:</strong> <span class="pill pill-green">High</span>
+            </p>
+            <p>
+              The <strong>Ananse Protocol</strong> fits the "High Trust"
+              communal culture of West Africa perfectly. Users are more likely
+              to trust a brother than a cloud server.
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px">
+          <div class="card-title">Risk Register (v2.1)</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Risk</th>
+                  <th>Likelihood</th>
+                  <th>Impact</th>
+                  <th>Mitigation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Low Freemium Conversion</strong></td>
+                  <td><span class="pill pill-gold">Medium</span></td>
+                  <td><span class="pill pill-red">High</span></td>
+                  <td>
+                    Ensure the "Biz" features (OCR, Auto-Reply) solve urgent
+                    money problems for merchants, making the $12/mo a
+                    "no-brainer" investment.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Home Node Power Loss (Dumsor)</td>
+                  <td><span class="pill pill-red">High</span></td>
+                  <td><span class="pill pill-gold">Medium</span></td>
+                  <td>
+                    Mobile app caches last 24h context; falls back to SMS
+                    command mode.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Guardian Collusion</td>
+                  <td><span class="pill pill-green">Low</span></td>
+                  <td><span class="pill pill-red">Critical</span></td>
+                  <td>
+                    Requires 3/5 shards. UI alerts user if a recovery attempt is
+                    initiated.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      // Simple active state observer
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              document
+                .querySelectorAll(".nav-link")
+                .forEach((l) => l.classList.remove("active"));
+              const id = entry.target.getAttribute("id");
+              document
+                .querySelector(`.nav-link[href="#${id}"]`)
+                ?.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-30% 0px -60% 0px" },
+      );
+
+      document.querySelectorAll("section").forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>
